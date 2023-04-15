@@ -5,3 +5,4 @@ public class EmptyInputException extends Exception {
         super(message);
     }
 }
+
