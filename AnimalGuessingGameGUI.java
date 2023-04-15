@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class AnimalGuessingGameGUI {
     private JFrame frame;
@@ -16,6 +17,9 @@ public class AnimalGuessingGameGUI {
     private JMenuItem newGameMenuItem;
     private JMenuItem exitMenuItem;
     private JMenuItem deleteLogMenuItem;
+    private LinkedList<Player> players;
+
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
@@ -29,6 +33,7 @@ public class AnimalGuessingGameGUI {
 
     public AnimalGuessingGameGUI() {
         initialize();
+        players = new LinkedList<>();
     }
 
     private void initialize() {
@@ -80,21 +85,40 @@ public class AnimalGuessingGameGUI {
         menuBar.add(gameMenu);
     }
 
-    private class StartGameButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // Code to start the game goes here
-            System.out.println("Game started!");
-    
-            // Save a log entry when the Start Game button is pressed
-            String logEntry = FileActions.createLogEntry("Game started!");
+     // AnimalGuessingGameGUI.java
+
+private class StartGameButtonListener implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String numPlayersStr = JOptionPane.showInputDialog(frame, "Enter the number of players:", "Number of Players", JOptionPane.QUESTION_MESSAGE);
+        int numPlayers = Integer.parseInt(numPlayersStr);
+
+        for (int i = 0; i < numPlayers; i++) {
+            String playerName = JOptionPane.showInputDialog(frame, "Enter the name of player " + (i + 1) + ":", "Player Name", JOptionPane.QUESTION_MESSAGE);
+            players.add(new Player(playerName));
+
+            // Save a log entry when a player is entered
+            String logEntry = FileActions.createLogEntry("Player entered: " + playerName);
             try {
                 FileActions.saveLog(logEntry);
             } catch (IOException ioException) {
                 JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+
+        // Save a log entry when the Start Game button is pressed
+        String logEntry = FileActions.createLogEntry("Game started with " + numPlayers + " players.");
+        try {
+            FileActions.saveLog(logEntry);
+        } catch (IOException ioException) {
+            JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        // Code to start the game goes here
+        System.out.println("Game started with " + numPlayers + " players.");
     }
+}
+
     
 
     private class NewGameMenuItemListener implements ActionListener {
