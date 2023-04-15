@@ -43,8 +43,9 @@ public class AnimalGuessingGameGUI {
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 
         startGameButton = new JButton("Start Game");
-        startGameButton.addActionListener(new StartGameButtonListener());
-        mainPanel.add(startGameButton);
+    startGameButton.setToolTipText("Click to start the game"); // Add a tooltip to the Start Game button
+    startGameButton.addActionListener(new StartGameButtonListener());
+    mainPanel.add(startGameButton);
     }
 
     private void createMenu() {
