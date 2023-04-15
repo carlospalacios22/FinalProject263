@@ -13,3 +13,4 @@ public class ExceptionErrors {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
+
