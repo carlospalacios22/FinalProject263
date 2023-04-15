@@ -1,4 +1,5 @@
 Animal Guessing Game
+
 This is an interactive game where players can guess the name of different animals based on zoomed in images and sounds.
 
 Getting Started
