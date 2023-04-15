@@ -18,6 +18,7 @@ public class AnimalGuessingGameGUI {
     private JMenuItem exitMenuItem;
     private JMenuItem deleteLogMenuItem;
     private LinkedList<Player> players;
+    private WindowSettings windowSettings;
 
 
     public static void main(String[] args) {
@@ -40,17 +41,26 @@ public class AnimalGuessingGameGUI {
         frame = new JFrame("Animal Guessing Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
+        windowSettings = new WindowSettings("/photos/background.png");
 
+        windowSettings.setLayout(new GridBagLayout());
+        frame.setContentPane(windowSettings);
+    
         createMenu();
         frame.setJMenuBar(menuBar);
-
-        JPanel mainPanel = new JPanel();
-        frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-
+    
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.anchor = GridBagConstraints.CENTER;
+    
         startGameButton = new JButton("Start Game");
-    startGameButton.setToolTipText("Click to start the game"); // Add a tooltip to the Start Game button
-    startGameButton.addActionListener(new StartGameButtonListener());
-    mainPanel.add(startGameButton);
+        startGameButton.setFont(new Font("Arial", Font.BOLD, 24)); // Set font size and style
+        startGameButton.setForeground(Color.BLUE); // Set font color
+        startGameButton.setToolTipText("Click to start the game");
+        startGameButton.addActionListener(new StartGameButtonListener());
+        startGameButton.setPreferredSize(new Dimension(200, 100)); // Set button size
+        windowSettings.add(startGameButton, constraints);
     }
 
     private void createMenu() {
@@ -91,33 +101,44 @@ private class StartGameButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String numPlayersStr = JOptionPane.showInputDialog(frame, "Enter the number of players:", "Number of Players", JOptionPane.QUESTION_MESSAGE);
-        int numPlayers = Integer.parseInt(numPlayersStr);
-
-        for (int i = 0; i < numPlayers; i++) {
-            String playerName = JOptionPane.showInputDialog(frame, "Enter the name of player " + (i + 1) + ":", "Player Name", JOptionPane.QUESTION_MESSAGE);
-            players.add(new Player(playerName));
-
-            // Save a log entry when a player is entered
-            String logEntry = FileActions.createLogEntry("Player entered: " + playerName);
+        
+        if (numPlayersStr != null) {
             try {
-                FileActions.saveLog(logEntry);
-            } catch (IOException ioException) {
-                JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
+                ExceptionErrors.checkNumberOfPlayers(numPlayersStr);
+                int numPlayers = Integer.parseInt(numPlayersStr);
+
+                for (int i = 0; i < numPlayers; i++) {
+                    String playerName = JOptionPane.showInputDialog(frame, "Enter the name of player " + (i + 1) + ":", "Player Name", JOptionPane.QUESTION_MESSAGE);
+                    players.add(new Player(playerName));
+
+                    // Save a log entry when a player is entered
+                    String logEntry = FileActions.createLogEntry("Player entered: " + playerName);
+                    try {
+                        FileActions.saveLog(logEntry);
+                    } catch (IOException ioException) {
+                        JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+                // Save a log entry when the Start Game button is pressed
+                String logEntry = FileActions.createLogEntry("Game started with " + numPlayers + " players.");
+                try {
+                    FileActions.saveLog(logEntry);
+                } catch (IOException ioException) {
+                    JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                // Code to start the game goes here
+                System.out.println("Game started with " + numPlayers + " players.");
+            } catch (EmptyInputException ex) {
+                ExceptionErrors.showMessage(ex.getMessage());
+            } catch (NumberFormatException ex) {
+                ExceptionErrors.showMessage("Invalid number format! Please enter a valid number.");
             }
         }
-
-        // Save a log entry when the Start Game button is pressed
-        String logEntry = FileActions.createLogEntry("Game started with " + numPlayers + " players.");
-        try {
-            FileActions.saveLog(logEntry);
-        } catch (IOException ioException) {
-            JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Code to start the game goes here
-        System.out.println("Game started with " + numPlayers + " players.");
     }
 }
+
 
     
 
