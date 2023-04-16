@@ -135,6 +135,13 @@ private class StartGameButtonListener implements ActionListener {
             } catch (NumberFormatException ex) {
                 ExceptionErrors.showMessage("Invalid number format! Please enter a valid number.");
             }
+
+            if (players.size() > 0) {
+                GamePanel gamePanel = new GamePanel(players); // Pass the list of players to the GamePanel
+                frame.setContentPane(gamePanel);
+                frame.revalidate();
+                frame.repaint();
+            }
         }
     }
 }
