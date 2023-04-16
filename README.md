@@ -1,6 +1,7 @@
 ## Animal Guessing Game
 
-This is an interactive game where players can guess the name of different animals based on zoomed in images and sounds.
+This is an interactive game where players can guess the name of different animals based on zoomed in images and sounds**.
+
 
 ## Getting Started
 Download the repository to your local machine.
@@ -16,3 +17,6 @@ If the player guesses correctly, the player will win a prize of their selection.
 If the player guesses incorrectly, the player will loose money 
 
 The player can continue to play until they choose to quit the game or until their balance is 0.
+
+
+**Curent version does not play sound properly - code exists
