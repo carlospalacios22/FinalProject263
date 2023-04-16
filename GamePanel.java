@@ -1,102 +1,41 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.LinkedList;
-import java.util.Random;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
-public class GamePanel extends JPanel {
-    private final JLabel imageLabel;
-    private final JComboBox<String> animalComboBox;
-    private final JButton submitButton;
-    private final JTextArea playersInfo;
-    private final LinkedList<Player> players;
-    private int currentPlayerIndex;
-    private final String[] animalOptions;
-    private final String correctAnswer;
-    private final String correctAnswerFullName;
+public class FileActions {
+    private static final String LOG_FILE = "log.txt";
 
-    public GamePanel(LinkedList<Player> playersList) {
-        players = playersList;
-        currentPlayerIndex = 0;
-        setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-
-        // Animal options
-        animalOptions = new String[]{"cat", "dog", "lion", "frog", "horse", "bunny", "kangaroo", "monkey", "fox", "wolf"};
-        int selectedAnimalIndex = new Random().nextInt(animalOptions.length);
-
-        // Load the animal image
-        correctAnswer = "./animals/" + animalOptions[selectedAnimalIndex] + ".png";
-        correctAnswerFullName = "./animals/" + animalOptions[selectedAnimalIndex] + "-full.png";
-        ImageIcon animalImage = new ImageIcon(correctAnswer);
-        imageLabel = new JLabel(new ImageIcon(animalImage.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-        constraints.gridy = 1;
-        add(imageLabel, constraints);
-
-        // Animal combo box
-        animalComboBox = new JComboBox<>(animalOptions);
-        constraints.gridy = 2;
-        add(animalComboBox, constraints);
-
-        constraints.insets = new Insets(10, 0, 10, 0);
-
-        playersInfo = new JTextArea(10, 20);
-        playersInfo.setEditable(false);
-        updatePlayersInfo();
-        constraints.gridy = 3;
-        add(playersInfo, constraints);
-
-        submitButton = new JButton("Submit");
-        submitButton.addActionListener(new SubmitButtonListener());
-        constraints.gridy = 4;
-        add(submitButton, constraints);
+    public static void saveLog(String logEntry) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, true))) {
+            writer.write(logEntry + System.lineSeparator());
+        }
     }
 
-    private void updatePlayersInfo() {
-        StringBuilder sb = new StringBuilder();
-        for (Player player : players) {
-            sb.append(player.getName()).append(" - $").append(player.getMoney()).append("\n");
+    public static ArrayList<String> readLog() throws IOException {
+        ArrayList<String> logEntries = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(LOG_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                logEntries.add(line);
+            }
         }
-        playersInfo.setText(sb.toString());
+        return logEntries;
     }
 
-    private class SubmitButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String selectedAnimal = (String) animalComboBox.getSelectedItem();
-            Player currentPlayer = players.get(currentPlayerIndex);
+    public static String createLogEntry(String message) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter) + " - " + message;
+    }
 
-            if (selectedAnimal.equals(animalOptions[new Random().nextInt(animalOptions.length)])) {
-                ImageIcon fullImage = new ImageIcon(correctAnswerFullName);
-                JLabel fullImageLabel = new JLabel(new ImageIcon(fullImage.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH)));
-                JOptionPane.showMessageDialog(GamePanel.this, fullImageLabel, "Correct!", JOptionPane.INFORMATION_MESSAGE);
-                int reward = new Random().nextInt(500) + 500;
-                currentPlayer.addMoney(reward);
-                JOptionPane.showMessageDialog(GamePanel.this, "Congratulations, " + currentPlayer.getName() + "! You won $" + reward + ".", "You won!", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                currentPlayer.subtractMoney(100);
-                JOptionPane.showMessageDialog(GamePanel.this, currentPlayer.getName() + ", you guessed wrong. You lost $100.", "Wrong answer", JOptionPane.ERROR_MESSAGE);
-                if (currentPlayer.getMoney() == 0) {
-                    JOptionPane.showMessageDialog(GamePanel.this, currentPlayer.getName() + " is out of the game.", "Out of game", JOptionPane.ERROR_MESSAGE);
-                    players.remove(currentPlayer);
-                    if (players.size() == 0) {
-                        JOptionPane.showMessageDialog(GamePanel.this, "All players are out of the game. Game over.", "Game over", JOptionPane.ERROR_MESSAGE);
-                        System.exit(0);
-                    }
-                }
-            }
 
-            currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-            updatePlayersInfo();
-
-            // Check if all players have completed their turns and ask to continue playing or not
-            if (currentPlayerIndex == 0) {
-                int response = JOptionPane.showConfirmDialog(GamePanel.this, "All players won/lost something. Keep playing?", "Continue?", JOptionPane.YES_NO_OPTION);
-                if (response == JOptionPane.NO_OPTION) {
-                    System.exit(0);
-                }
-            }
-        }
+public static void deleteLog() throws IOException {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter(LOG_FILE, false))) {
+        writer.write("");
     }
 }
+
+}
+
+
