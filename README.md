@@ -6,6 +6,8 @@ This is an interactive game where players can guess the name of different animal
 ## Getting Started
 Download the repository to your local machine.
 
+Run the Main method in AnimalGuessingGameGUI to start the application 
+
 ## How to Play
 
 The game will display a zoomed in image of an animal.
