@@ -8,21 +8,22 @@ import java.util.LinkedList;
 
 public class AnimalGuessingGameGUI {
     
-    private JFrame frame;
-    private JButton startGameButton;
-    private JMenuBar menuBar;
-    private JMenu fileMenu;
-    private JMenuItem openLogMenuItem;
-    private JMenuItem saveLogMenuItem;
-    private JMenu gameMenu;
-    private JMenuItem newGameMenuItem;
-    private JMenuItem exitMenuItem;
-    private JMenuItem deleteLogMenuItem;
-    private LinkedList<Player> players;
-    private WindowSettings windowSettings;
+    private JFrame frame;                   // Main JFrame for the application
+    private JButton startGameButton;        // JButton to start the game
+    private JMenuBar menuBar;               // JMenuBar for the menu at the top of the application
+    private JMenu fileMenu;                 // JMenu for "File" options
+    private JMenuItem openLogMenuItem;      // JMenuItem to open the log file
+    private JMenuItem saveLogMenuItem;      // JMenuItem to save the log file
+    private JMenu gameMenu;                 // JMenu for "Game" options
+    private JMenuItem newGameMenuItem;      // JMenuItem to start a new game
+    private JMenuItem exitMenuItem;         // JMenuItem to exit the application
+    private JMenuItem deleteLogMenuItem;    // JMenuItem to delete the log file
+    private LinkedList<Player> players;     // LinkedList to store Player objects
+    private WindowSettings windowSettings;  // WindowSettings object to set up the application window
+    
 
 
-
+// Below is the main method
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
@@ -34,11 +35,12 @@ public class AnimalGuessingGameGUI {
         });
     }
 
+    // Constructor
     public AnimalGuessingGameGUI() {
         initialize();
         players = new LinkedList<>();
     }
-
+// Below is the initialize method
     private void initialize() {
         frame = new JFrame("Animal Guessing Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,7 +49,7 @@ public class AnimalGuessingGameGUI {
 
         windowSettings.setLayout(new GridBagLayout());
         frame.setContentPane(windowSettings);
-    
+    // Creates the menu bar
         createMenu();
         frame.setJMenuBar(menuBar);
     
@@ -55,7 +57,8 @@ public class AnimalGuessingGameGUI {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.CENTER;
-    
+
+        // Creates the start game button
         startGameButton = new JButton("Start Game");
         startGameButton.setFont(new Font("Arial", Font.BOLD, 24)); // Set font size and style
         startGameButton.setForeground(Color.BLUE); // Set font color
@@ -73,42 +76,43 @@ public class AnimalGuessingGameGUI {
         openLogMenuItem = new JMenuItem("Open Log");
         openLogMenuItem.addActionListener(new OpenLogMenuItemListener());
         fileMenu.add(openLogMenuItem);
-
+        // Save log menu item
         saveLogMenuItem = new JMenuItem("Save Log");
         saveLogMenuItem.addActionListener(new SaveLogMenuItemListener());
         fileMenu.add(saveLogMenuItem);
         menuBar.add(fileMenu);
-
+        // Delete log menu item
         deleteLogMenuItem = new JMenuItem("Delete Log");
         deleteLogMenuItem.addActionListener(new DeleteLogMenuItemListener());
         fileMenu.add(deleteLogMenuItem);
 
         // Game menu
         gameMenu = new JMenu("Game");
-
+        // New game menu item
         newGameMenuItem = new JMenuItem("New Game");
         newGameMenuItem.addActionListener(new NewGameMenuItemListener());
         gameMenu.add(newGameMenuItem);
-
+        // Exit menu item
         exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(new ExitMenuItemListener());
         gameMenu.add(exitMenuItem);
-
+        // Add the game menu to the menu bar
         menuBar.add(gameMenu);
     }
 
-     // AnimalGuessingGameGUI.java
+    // Start game button listener
 
 private class StartGameButtonListener implements ActionListener {
     @Override
+    // When the Start Game button is pressed, the number of players is entered
     public void actionPerformed(ActionEvent e) {
         String numPlayersStr = JOptionPane.showInputDialog(frame, "Enter the number of players:", "Number of Players", JOptionPane.QUESTION_MESSAGE);
         
         if (numPlayersStr != null) {
-            try {
+            try { // Try to parse the number of players
                 ExceptionErrors.checkNumberOfPlayers(numPlayersStr);
                 int numPlayers = Integer.parseInt(numPlayersStr);
-
+                 // If the number of players is valid, enter the names of the players
                 for (int i = 0; i < numPlayers; i++) {
                     String playerName = JOptionPane.showInputDialog(frame, "Enter the name of player " + (i + 1) + ":", "Player Name", JOptionPane.QUESTION_MESSAGE);
                     players.add(new Player(playerName));
@@ -130,7 +134,7 @@ private class StartGameButtonListener implements ActionListener {
                     JOptionPane.showMessageDialog(frame, "Error saving log file.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
-                // Code to start the game goes here
+                // Code to start the game g
                 System.out.println("Game started with " + numPlayers + " players.");
             } catch (EmptyInputException ex) {
                 ExceptionErrors.showMessage(ex.getMessage());
@@ -150,7 +154,7 @@ private class StartGameButtonListener implements ActionListener {
 
 
     
-
+     // Below is the DeleteLogMenuItemListener class
     private class NewGameMenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -158,7 +162,7 @@ private class StartGameButtonListener implements ActionListener {
             System.out.println("New game started!");
         }
     }
-
+        
     private class ExitMenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -166,7 +170,7 @@ private class StartGameButtonListener implements ActionListener {
             System.exit(0);
         }
     }
-
+          //oPEn log menu item listener
     private class OpenLogMenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -179,6 +183,7 @@ private class StartGameButtonListener implements ActionListener {
         }
     }
 
+//save log menu item listener
     private class SaveLogMenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -204,12 +209,12 @@ private class StartGameButtonListener implements ActionListener {
                     JOptionPane.showMessageDialog(frame, "Log file deleted.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IOException ioException) {
                     JOptionPane.showMessageDialog(frame, "Error deleting log file.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        }
-    }
+                }//end of try catch
+            }//end of if
+        }//end of action performed
+    }// end of delete log menu item listener
 
 
-}
+}//END OF CLASS
 
 
