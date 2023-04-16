@@ -1,5 +1,7 @@
 // ExceptionErrors.java
 
+
+
 import javax.swing.JOptionPane;
 
 public class ExceptionErrors {
