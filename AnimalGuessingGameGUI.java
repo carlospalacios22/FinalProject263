@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class AnimalGuessingGameGUI {
+    
     private JFrame frame;
     private JButton startGameButton;
     private JMenuBar menuBar;
@@ -181,7 +182,7 @@ private class StartGameButtonListener implements ActionListener {
     private class SaveLogMenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String logEntry = FileActions.createLogEntry("Log saved."); 
+            String logEntry = FileActions.createLogEntry("Log saved.");
             try {
                 FileActions.saveLog(logEntry);
                 JOptionPane.showMessageDialog(frame, "Log saved.", "Success", JOptionPane.INFORMATION_MESSAGE);
