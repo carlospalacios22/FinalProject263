@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+// // File I/O: reading and writing logs to a file
 public class FileActions {
     private static final String LOG_FILE = "log.txt";
 
@@ -39,4 +40,3 @@ public static void deleteLog() throws IOException {
 }
 
 
- 
