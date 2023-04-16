@@ -1,3 +1,5 @@
+
+
 public class Player {
     private String name;
     private int money;
@@ -23,4 +25,3 @@ public class Player {
         this.money -= amount;
     }
 }
- 
