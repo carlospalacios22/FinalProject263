@@ -27,4 +27,3 @@ public class WindowSettings extends JPanel {
 }
 
 
- 
