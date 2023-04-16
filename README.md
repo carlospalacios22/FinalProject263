@@ -19,4 +19,4 @@ If the player guesses incorrectly, the player will loose money
 The player can continue to play until they choose to quit the game or until their balance is 0.
 
 
-**Curent version does not play sound properly - code exists
+**Curent version does not play sound properly when clicked on the image to have aditional hints
