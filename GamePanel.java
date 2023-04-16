@@ -6,17 +6,19 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class GamePanel extends JPanel {
-    private final JLabel imageLabel;
+  
     private final JComboBox<String> animalComboBox;
     private final JButton submitButton;
     private final JTextArea playersInfo;
     private final LinkedList<Player> players;
     private int currentPlayerIndex;
-    private final String[] animalOptions;
+   
     private final String correctAnswer;
     private final String correctAnswerFullName;
-    private int selectedAnimalIndex;
-
+    protected int selectedAnimalIndex; 
+    protected final JLabel imageLabel;
+    protected final String[] animalOptions;
+    
     public GamePanel(LinkedList<Player> playersList) {
         players = playersList;
         currentPlayerIndex = 0;
@@ -26,6 +28,7 @@ public class GamePanel extends JPanel {
         // Animal options
         animalOptions = new String[]{"cat", "dog", "lion", "frog", "horse", "bunny", "kangaroo", "monkey", "fox", "wolf"};
         selectedAnimalIndex = new Random().nextInt(animalOptions.length);
+
 
         // Load the animal image
         correctAnswer = "./animals/" + animalOptions[selectedAnimalIndex] + ".png";
