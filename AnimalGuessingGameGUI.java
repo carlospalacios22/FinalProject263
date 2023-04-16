@@ -21,6 +21,7 @@ public class AnimalGuessingGameGUI {
     private WindowSettings windowSettings;
 
 
+
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
