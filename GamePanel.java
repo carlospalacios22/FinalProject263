@@ -5,12 +5,23 @@ import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.Random;
 
+
+
+
+// GamePanel.java
+// Parent class: GamePanel
+// Implements a Layout Manager (GridBagLayout) with a JFrame
 public class GamePanel extends JPanel {
   
-    private final JComboBox<String> animalComboBox;
-    private final JButton submitButton;
-    private final JTextArea playersInfo;
-    private final LinkedList<Player> players;
+   // JComboBox is used as one of the Swing elements
+   private final JComboBox<String> animalComboBox;
+   // JButton is used as one of the Swing elements
+   private final JButton submitButton;
+   // JTextArea is used as one of the Swing elements
+   private final JTextArea playersInfo;
+   // LinkedList is used as one of the data structures
+   private final LinkedList<Player> players;
+
     private int currentPlayerIndex;
    
     private final String correctAnswer;
@@ -19,6 +30,8 @@ public class GamePanel extends JPanel {
     protected final JLabel imageLabel;
     protected final String[] animalOptions;
     
+
+        // Overloaded constructor here
     public GamePanel(LinkedList<Player> playersList) {
         players = playersList;
         currentPlayerIndex = 0;
@@ -65,6 +78,8 @@ public class GamePanel extends JPanel {
         playersInfo.setText(sb.toString());
     }
 
+
+    //  // Overridden method: actionPerformed (from ActionListener)
     private class SubmitButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
